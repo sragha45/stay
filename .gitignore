@@ -1,0 +1,4 @@
+/tests/db.json
+/venv/*
+/.idea/*
+*db.json

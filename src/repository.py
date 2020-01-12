@@ -5,6 +5,7 @@ from typing import List
 from tinydb import TinyDB, Query
 
 from src.db_mapper import EventDBMapper, UserDBMapper, EventObjMapper, UserObjMapper
+from src.exceptions import DuplicateUserException
 from src.model import User, Event
 
 logger = logging.getLogger(__name__)
@@ -29,6 +30,11 @@ class UserRepository(AbstractRepository):
 
     def add_user(self, user: User):
         user = UserDBMapper(user)
+        logger.debug("Inserting: " + str(user.to_db_object()))
+        all_users = list(self.get_all_users())
+        for user_present in all_users:
+            if user.email == user_present.email:
+                raise DuplicateUserException(user)
         self.table.insert(user.to_db_object())
 
     def get_user(self, user_email: str) -> User:

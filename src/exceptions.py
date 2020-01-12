@@ -21,3 +21,11 @@ class OverlappingEvents(Exception):
 class EventFull(Exception):
     def __str__(self):
         return "Event is already full"
+
+
+class DuplicateUserException(Exception):
+    def __init__(self, user):
+        self.user = user
+
+    def __str__(self):
+        return f"There has been a duplicate user: {self.user}"
